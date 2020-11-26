@@ -1,4 +1,4 @@
-package org.example;
+package hw3;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 
-public class AppTest 
+public class SeleniumTest
 {
     private WebDriver driver;
 
