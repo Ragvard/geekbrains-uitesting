@@ -11,14 +11,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.assertEquals;
+import org.slf4j.Logger;
 
 public class YTPage {
 
     private WebDriver driver;
+
+    private Logger logger;
 
     private String site = "https://www.youtube.com";
 
@@ -80,9 +79,11 @@ public class YTPage {
     @FindBy(xpath = "//*[@id=\"subscribe-button\"]/ytd-subscribe-button-renderer/paper-button")
     private WebElement channel_subscribebutton;
 
-    public YTPage(WebDriver driver) {
+    public YTPage(WebDriver driver, Logger logger) {
         this.driver = driver;
+        this.logger = logger;
         driver.get(site);
+        logger.debug("Открыта страница " + site);
         PageFactory.initElements(driver, this);
     }
 
@@ -90,6 +91,7 @@ public class YTPage {
 
     public YTPage menu_clicktrending() {
         menu_trending.click();
+        logger.debug("Нажата кнопка меню-в тренде");
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.visibilityOfAllElements(
                         trending_filmsbutton,
@@ -102,36 +104,42 @@ public class YTPage {
 
     public YTPage menu_clicktitle() {
         menu_title.click();
+        logger.debug("Нажата кнопка меню-главная");
         // TODO Explicit wait
         return this;
     }
 
     public YTPage menu_clicksubscriptions() {
         menu_subscriptions.click();
+        logger.debug("Нажата кнопка меню-подписки");
         // TODO Explicit wait
         return this;
     }
 
     public YTPage menu_clicklibrary() {
         menu_library.click();
+        logger.debug("Нажата кнопка меню-библиотека");
         // TODO Explicit wait
         return this;
     }
 
     public YTPage menu_clickhistory() {
         menu_history.click();
+        logger.debug("Нажата кнопка меню-история");
         // TODO Explicit wait
         return this;
     }
 
     public YTPage menu_watchlater() {
         menu_watchlater.click();
+        logger.debug("Нажата кнопка меню-смотреть позже");
         // TODO Explicit wait
         return this;
     }
 
     public YTPage menu_likedvideos() {
         menu_likedvideos.click();
+        logger.debug("Нажата кнопка меню-понравившиеся");
         // TODO Explicit wait
         return this;
     }
@@ -140,6 +148,7 @@ public class YTPage {
 
     public YTPage trending_clickmusic() {
         trending_musicbutton.click();
+        logger.debug("Нажата кнопка в тренде-музыка");
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.visibilityOf(trending_sectionname));
         return this;
@@ -147,6 +156,7 @@ public class YTPage {
 
     public YTPage trending_clickgames() {
         trending_gamesbutton.click();
+        logger.debug("Нажата кнопка в тренде-видеоигры");
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.visibilityOf(trending_sectionname));
         return this;
@@ -154,6 +164,7 @@ public class YTPage {
 
     public YTPage trending_clicknews() {
         trending_newsbutton.click();
+        logger.debug("Нажата кнопка в тренде-новости");
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.visibilityOf(trending_sectionname));
         return this;
@@ -161,6 +172,7 @@ public class YTPage {
 
     public YTPage trending_clickfilms() {
         trending_filmsbutton.click();
+        logger.debug("Нажата кнопка в тренде-фильмы");
         new WebDriverWait(driver, 5).until(
                 ExpectedConditions.visibilityOf(trending_sectionname));
         return this;
@@ -179,6 +191,7 @@ public class YTPage {
                 .sendKeys(Keys.ENTER)
                 .build()
                 .perform();
+        logger.debug("Выполнен поиск по запросу: " + query);
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("ytd-search-sub-menu-renderer"))
         );
@@ -193,12 +206,16 @@ public class YTPage {
                 .build()
                 .perform();
 
+        logger.debug("Выполнен поиск видео по запросу: " + query);
+
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("ytd-search-sub-menu-renderer"))
         );
 
         List<WebElement> webElements = driver.findElements(By.id("video-title"));
+        logger.debug("Перебор видео на странице...");
         for (WebElement element : webElements) {
+            logger.debug("Найдено видео " + element.getText());
             if (element.getText().equals(query)) {
                 element.click();
                 new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(
@@ -206,6 +223,8 @@ public class YTPage {
                 return this;
             }
         }
+
+        logger.debug("Видео по запросу не найдно");
 
         throw new IllegalArgumentException("No video by query " + query);
     }
@@ -218,12 +237,16 @@ public class YTPage {
                 .build()
                 .perform();
 
+        logger.debug("Выполнен поиск канала по запросу: " + query);
+
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("ytd-search-sub-menu-renderer"))
         );
 
         List<WebElement> webElements = driver.findElements(By.id("channel-title"));
+        logger.debug("Перебор каналов на странице...");
         for (WebElement element : webElements) {
+            logger.debug("Найден канал " + element.getText());
             if (element.getText().equals(query)) {
                 element.click();
                 new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(
@@ -231,6 +254,8 @@ public class YTPage {
                 return this;
             }
         }
+
+        logger.debug("Канал по запросу не найдн");
 
         throw new IllegalArgumentException("No channel by query " + query);
     }
@@ -242,41 +267,58 @@ public class YTPage {
     }
 
     public YTPage video_like() {
+        logger.debug("Проверка на наличие лайка");
         if (video_likebutton.getAttribute("class").equals("style-scope ytd-menu-renderer force-icon-button style-text")) {
+            logger.debug("Видео уже лайкнуто");
             video_likebutton.click();
+            logger.debug("Лайк убран");
         }
         video_likebutton.click();
+        logger.debug("Видео лайкнуто");
         return this;
     }
 
     public YTPage video_dislike() {
+        logger.debug("Проверка на наличие лайка");
         if (video_dislikebutton.getAttribute("class").equals("style-scope ytd-menu-renderer force-icon-button style-text")) {
+            logger.debug("Видео уже дизлайкнуто");
             video_dislikebutton.click();
+            logger.debug("Дизайк убран");
         }
         video_dislikebutton.click();
+        logger.debug("Видео дизлайкнуто");
         return this;
     }
 
     // Channel
 
     public YTPage channel_subscribe() {
+        logger.debug("Проверка на наличие подписки");
         if (channel_subscribebutton.getAttribute("subscribed").equals("true")) {
+            logger.debug("Подписка уже оформлена");
             channel_subscribebutton.click();
             driver.findElement(By.xpath("//*[@id=\"confirm-button\"]")).click();
+            logger.debug("Подписка отменена");
         }
 
         channel_subscribebutton.click();
+        logger.debug("Подписка оформлена");
 
         return this;
     }
 
     public YTPage channel_unsubscribe() {
+        logger.debug("Проверка на наличие подписки");
         if (channel_subscribebutton.getAttribute("subscribed").equals("null")) {
+            logger.debug("Подписка не оформлена");
             channel_subscribebutton.click();
+            logger.debug("Подписка оформлена");
+
         }
 
         channel_subscribebutton.click();
         driver.findElement(By.xpath("//*[@id=\"confirm-button\"]")).click();
+        logger.debug("Подписка отменена");
 
         return this;
     }
