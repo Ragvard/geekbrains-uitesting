@@ -41,11 +41,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_navigation_trendingmusic() {
-        WebElement result = new YTPage(driver, logger)
-                .menu_clicktrending()
-                .trending_clickmusic()
-                .trending_getsectionname();
+    public void testNavigationTrendingmusic() {
+        WebElement result = new YouTubePage(driver, logger)
+                .menuClickTrending()
+                .trendingClickMusic()
+                .trendingGetSectionname();
 
         logger.debug("Начало проверок");
         assertEquals("style-scope ytd-section-list-renderer", result.getAttribute("class"));
@@ -55,10 +55,10 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_search_searchbytitle() {
-        WebElement result = new YTPage(driver, logger)
-                .searchvideo("1943 British tank development in a nutshell")
-                .getVideo_title();
+    public void testSearchSearchbytitle() {
+        WebElement result = new YouTubePage(driver, logger)
+                .searchVideo("1943 British tank development in a nutshell")
+                .getVideoTitle();
 
         logger.debug("Начало проверок");
         assertEquals("style-scope ytd-video-primary-info-renderer", result.getAttribute("class"));
@@ -68,11 +68,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_likes_likevideo() {
-        WebElement likebutton = new YTPage(driver, logger)
-                .searchvideo("This Video Has 26,124,676 Views")
-                .video_like()
-                .getVideo_likebutton();
+    public void testLikesLikevideo() {
+        WebElement likebutton = new YouTubePage(driver, logger)
+                .searchVideo("This Video Has 26,124,676 Views")
+                .videoLike()
+                .getVideoLikebutton();
 
         logger.debug("Начало проверок");
         assertEquals("style-scope ytd-menu-renderer force-icon-button style-default-active", likebutton.getAttribute("class"));
@@ -81,11 +81,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_likes_dislikevideo() {
-        WebElement dislikebutton = new YTPage(driver, logger)
-                .searchvideo("cat")
-                .video_dislike()
-                .getVideo_likebutton();
+    public void testLikesDislikevideo() {
+        WebElement dislikebutton = new YouTubePage(driver, logger)
+                .searchVideo("cat")
+                .videoDislike()
+                .getVideoLikebutton();
 
         logger.debug("Начало проверок");
         assertEquals("style-scope ytd-menu-renderer force-icon-button style-default-active", dislikebutton.getAttribute("class"));
@@ -94,11 +94,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_subscription_subscribe() {
-        WebElement subscribebutton = new YTPage(driver, logger)
-                .searchchannel("Sabaton")
-                .channel_subscribe()
-                .getChannel_subscribebutton();
+    public void testSubscriptionSubscribe() {
+        WebElement subscribebutton = new YouTubePage(driver, logger)
+                .searchChannel("Sabaton")
+                .channelSubscribe()
+                .getChannelSubscribebutton();
 
         logger.debug("Начало проверок");
         assertEquals("true", subscribebutton.getAttribute("subscribed"));
@@ -107,11 +107,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void test_subscription_unsubscribe() {
-        WebElement subscribebutton = new YTPage(driver, logger)
-                .searchchannel("Sabaton")
-                .channel_unsubscribe()
-                .getChannel_subscribebutton();
+    public void testSubscriptionUnsubscribe() {
+        WebElement subscribebutton = new YouTubePage(driver, logger)
+                .searchChannel("Sabaton")
+                .channelUnsubscribe()
+                .getChannelSubscribebutton();
 
         logger.debug("Начало проверок");
         assertEquals("null", subscribebutton.getAttribute("subscribed"));
