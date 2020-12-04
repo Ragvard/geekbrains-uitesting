@@ -19,6 +19,7 @@
   </properties>
 
   <dependencies>
+    <!-- Для всех кроме hw4 -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
@@ -30,6 +31,8 @@
       <version>4.2.2</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Для hw4 -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -45,6 +48,7 @@
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
     </dependency>
+
     <!-- Для hw3 -->
     <dependency>
       <groupId>junit</groupId>
@@ -52,7 +56,8 @@
       <version>4.13</version>
       <scope>test</scope>
     </dependency>
-    <!-- Для остальных дз -->
+
+    <!-- Для остальных hw -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -107,7 +112,6 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
-
       </plugins>
     </pluginManagement>
   </build>
